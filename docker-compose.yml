@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/contact_db
+    networks:
+      - contact-network  # Add a network to link frontend and backend containers
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - backend
+    networks:
+      - contact-network  # Link to the same network as backend
+
+networks:
+  contact-network:
+    driver: bridge
