@@ -2,6 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
+
+// Enable CORS before the routes
+app.use(cors()); // Allow all domains by default, you can specify allowed origins here if needed
 
 app.use(express.json()); // For parsing application/json
 
@@ -26,8 +30,8 @@ const Contact = mongoose.model('Contact', contactSchema);
 
 // Get All Contacts
 app.get('/contacts', async (req, res) => {
-    console.log('GET /contacts endpoint hit');
-    try {
+  console.log('GET /contacts endpoint hit');
+  try {
     const contacts = await Contact.find();
     res.json(contacts);
   } catch (err) {
@@ -37,8 +41,8 @@ app.get('/contacts', async (req, res) => {
 
 // Create Contact
 app.post('/contacts', async (req, res) => {
-    console.log('POST /contacts endpoint hit');
-    try {
+  console.log('POST /contacts endpoint hit');
+  try {
     const { name, email, phone } = req.body;
     const contact = new Contact({ name, email, phone });
     await contact.save();
